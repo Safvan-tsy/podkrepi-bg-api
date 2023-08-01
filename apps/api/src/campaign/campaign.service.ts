@@ -491,7 +491,9 @@ export class CampaignService {
 
       if (donation) {
         donation.status = newDonationStatus
-        this.notificationService.sendNotification('successfulDonation', donation)
+        if (newDonationStatus === 'succeeded') {
+          this.notificationService.sendNotification('successfulDonation', donation)
+        }
       }
 
       Logger.debug('Donation found by subscription: ', donation)
@@ -526,7 +528,9 @@ export class CampaignService {
           select: donationNotificationSelect,
         })
 
-        this.notificationService.sendNotification('successfulDonation', donation)
+        if (newDonationStatus === 'succeeded') {
+          this.notificationService.sendNotification('successfulDonation', donation)
+        }
       } catch (error) {
         Logger.error(
           `Error while creating donation with paymentIntentId: ${paymentData.paymentIntentId} and status: ${newDonationStatus} . Error is: ${error}`,
